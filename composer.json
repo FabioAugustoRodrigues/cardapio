@@ -1,0 +1,15 @@
+{
+    "name": "fabio/cardapio",
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    },
+    "authors": [{
+        "name": "Fábio Augusto Rodrigues",
+        "email": "69022068+FabioAugustoRodrigues@users.noreply.github.com"
+    }],
+    "require": {
+        "php-di/php-di": "^6.4"
+    }
+}
