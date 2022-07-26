@@ -1,6 +1,6 @@
 <?php
 
-use app\auth\administracao\AuthAdministrador;
+use app\domain\auth\AuthAdministrador;
 use app\domain\repository\AdministradorRepository;
 use app\domain\service\AdministradorService;
 use app\helper\http\PayloadHttp;

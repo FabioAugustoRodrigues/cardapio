@@ -2,6 +2,7 @@
 
 namespace app\controller\http;
 
+use app\domain\exception\DomainException;
 use app\domain\exception\http\DomainHttpException;
 use app\domain\service\AdministradorService;
 
@@ -17,15 +18,18 @@ class AdministradorController extends ControllerAbstract
         $this->administradorService = $administradorService;
     }
 
-    public function login($dados){
+    public function login($dados)
+    {
         try {
-            if (!$this->administradorService->login($dados["nome"], $dados["senha"])){
+            if (!$this->administradorService->login($dados["nome"], $dados["senha"])) {
                 return $this->respondeComDados("Houve um erro ao tetnar realizar o login", 500);
             }
-
-            return $this->respondeComDados("Login realizado com sucesso!", 200);
-        } catch (DomainHttpException $e) {
-            return $this->respondeComDados($e->getMessage(), $e->getHttpStatusCode());
+        } catch (DomainHttpException $domainHttpException) {
+            return $this->respondeComDados($domainHttpException->getMessage(), $domainHttpException->getHttpStatusCode());
+        } catch (DomainException $domainException) {
+            return $this->respondeComDados($domainException->getMessage(), 500);
         }
+
+        return $this->respondeComDados("Login realizado com sucesso!", 200);
     }
 }

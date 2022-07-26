@@ -2,8 +2,8 @@
 
 namespace app\domain\service;
 
-use app\auth\administracao\AuthAdministrador;
-use app\domain\exception\DomainException;
+use app\domain\auth\AuthAdministrador;
+use app\domain\exception\http\DomainHttpException;
 use app\domain\model\Administrador;
 use app\domain\repository\AdministradorRepository;
 
@@ -22,7 +22,7 @@ class AdministradorService
     {
         $administrador = $this->lePorNome($nome);
         if ($administrador == null || !password_verify($senha, $administrador->getSenha())){
-            throw new DomainException("Nome ou senha incorretos!");
+            throw new DomainHttpException("Nome ou senha incorretos!");
         }
 
         $this->authAdministrador->criar($administrador);

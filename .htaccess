@@ -4,3 +4,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 RewriteRule ^login/(.*)$ app/view/pages/login.php?url=$1 [NC,L]
+RewriteRule ^catalogo/(.*)$ app/view/pages/catalogo.php?url=$1 [NC,L]

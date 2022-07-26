@@ -1,6 +1,6 @@
 <?php
 
-namespace app\auth\administracao;
+namespace app\domain\auth;
 
 use app\domain\auth\AuthAbstract;
 use app\domain\exception\DomainException;
@@ -29,8 +29,12 @@ class AuthAdministrador extends AuthAbstract{
     public function verificar(): bool
     {
         try {
-            if (!(isset($_SESSION['administrador_esta_logado']) || !$_SESSION['administrador_esta_logado'])){
-                header('Location: /');
+            if (!(isset($_SESSION['administrador_esta_logado']))){
+                header('Location: /cardapio/login/');
+            }
+
+            if ($_SESSION['administrador_esta_logado'] == false){
+                header('Location: /cardapio/login/');
             }
 
             return true;

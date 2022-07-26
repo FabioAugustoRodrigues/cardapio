@@ -11,6 +11,7 @@ class CollectionRoutes
     public function __construct()
     {
         self::$routes = array(
+            "login-admin" => new Method("app\\controller\\http\\AdministradorController", "login"),
         );
     }
 
