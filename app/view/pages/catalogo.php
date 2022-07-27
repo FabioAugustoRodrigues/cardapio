@@ -31,22 +31,6 @@ $authAdministrador->verificar();
 
     <!-- Arquivos CSS -->
     <link rel="stylesheet" href="../app/view/css/style.css" />
-
-    <style>
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -61,6 +45,9 @@ $authAdministrador->verificar();
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Catalogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Categorias</a>
                     </li>
                 </ul>
             </div>

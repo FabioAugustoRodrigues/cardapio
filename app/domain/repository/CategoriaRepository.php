@@ -52,7 +52,7 @@ class CategoriaRepository
         $stmt->execute();
         Conexao::desconecta();
 
-        $result = $stmt->fetchAll(PDO::FETCH_CLASS, Categoria::class);
+        $result = $stmt->fetchAll();
 
         if (!$result) {
             return [];
@@ -76,11 +76,31 @@ class CategoriaRepository
         return true;
     }
 
-    public function lePorId($id)
+    public function lePorId($id): ?Categoria
     {
         $sql = "SELECT * FROM categoria WHERE id = :id";
         $stmt = Conexao::getConexao()->prepare($sql);
         $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        Conexao::desconecta();
+
+        $result = $stmt->fetch();
+
+        if (!$result) {
+            return null;
+        }
+
+        return Categoria::create()
+                            ->setId($result["id"])
+                            ->setNome($result["nome"])
+                            ->setDescricao($result["descricao"]);
+    }
+
+    public function lePorNome(string $nome): ?Categoria
+    {
+        $sql = "SELECT * FROM categoria WHERE nome = :nome";
+        $stmt = Conexao::getConexao()->prepare($sql);
+        $stmt->bindValue(':nome', $nome);
         $stmt->execute();
         Conexao::desconecta();
 
