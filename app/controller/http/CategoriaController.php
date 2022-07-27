@@ -52,4 +52,37 @@ class CategoriaController extends ControllerAbstract
             return $this->respondeComDados($domainException->getMessage(), 500);
         }
     }
+
+    public function lerPorId($dados)
+    {
+        try {
+            $categoria = $this->categoriaService->lePorId($dados["id"]);
+            if ($categoria == null) {
+                return $this->respondeComDados(null, 200);
+            }
+
+            return $this->respondeComDados($categoria->toArray(), 200);
+        } catch (DomainHttpException $domainHttpException) {
+            return $this->respondeComDados($domainHttpException->getMessage(), $domainHttpException->getHttpStatusCode());
+        } catch (DomainException $domainException) {
+            return $this->respondeComDados($domainException->getMessage(), 500);
+        }
+    }
+
+    public function atualizar($dados)
+    {
+        try {
+            $dadosDaCategoriaEmArray = ["id" => $dados["id"], "nome" => $dados["nome"], "descricao" => $dados["descricao"]];
+
+            $categoria = (object) $this->jsonMapper->map($dadosDaCategoriaEmArray, new Categoria());
+            // $categoria->setId(intval($dados["id"]));
+            $this->categoriaService->atualizar($categoria);
+
+            return $this->respondeComDados("Categoria atualizada com sucesso!", 201);
+        } catch (DomainHttpException $domainHttpException) {
+            return $this->respondeComDados($domainHttpException->getMessage(), $domainHttpException->getHttpStatusCode());
+        } catch (DomainException $domainException) {
+            return $this->respondeComDados($domainException->getMessage(), 500);
+        }
+    }
 }

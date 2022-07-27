@@ -25,6 +25,26 @@ class CategoriaService
         return $categoria->getId();
     }
 
+    public function atualizar(Categoria $categoria): bool
+    {
+        if ($this->lePorId($categoria->getId()) == null){
+            throw new DomainHttpException("Categoria não encotrada", 404);
+        }
+
+        $categoriaTemp = $this->lePorNome($categoria->getNome());
+        if ($categoriaTemp != null && $categoriaTemp->getId() != $categoria->getId()){
+            throw new DomainHttpException("Nome já está em uso", 409);
+        }
+
+        $this->categoriaRepository->atualizar($categoria);
+        return true;
+    }
+
+    public function lePorId(int $id): ?Categoria
+    {
+        return $this->categoriaRepository->lePorId($id);
+    }
+
     public function listar(): array
     {
         return $this->categoriaRepository->listar();

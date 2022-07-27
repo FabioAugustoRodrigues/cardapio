@@ -13,7 +13,9 @@ class CollectionRoutes
         self::$routes = array(
             "login-admin" => new Method("app\\controller\\http\\AdministradorController", "login"),
             "criar-categoria" => new Method("app\\controller\\http\\CategoriaController", "criar"),
-            "listar-categorias" => new Method("app\\controller\\http\\CategoriaController", "listar")
+            "listar-categorias" => new Method("app\\controller\\http\\CategoriaController", "listar"),
+            "ler-categoria-por-id" => new Method("app\\controller\\http\\CategoriaController", "lerPorId"),
+            "editar-categoria"=> new Method("app\\controller\\http\\CategoriaController", "atualizar")
         );
     }
 

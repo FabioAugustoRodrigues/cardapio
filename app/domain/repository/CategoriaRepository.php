@@ -76,7 +76,7 @@ class CategoriaRepository
         return true;
     }
 
-    public function lePorId($id): ?Categoria
+    public function lePorId(int $id): ?Categoria
     {
         $sql = "SELECT * FROM categoria WHERE id = :id";
         $stmt = Conexao::getConexao()->prepare($sql);
