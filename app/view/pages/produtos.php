@@ -59,9 +59,9 @@ $authAdministrador->verificar();
 
     <main class="container mt-5">
         <div class="bg-light p-5 rounded">
-            <h1>Categorias</h1>
+            <h1>Produtos</h1>
 
-            <table class="table" id="categoriasCadastradas">
+            <table class="table" id="produtosCadastrados">
                 <thead>
                     <tr>
                         <th scope="col">Nome</th>
@@ -69,62 +69,72 @@ $authAdministrador->verificar();
                     </tr>
                 </thead>
                 <tbody>
-                    
+
                 </tbody>
             </table>
-            <button class="btn btn-primary w-25" id="abrirModalCadastrarCategoria">Cadastrar</button>
+            <button class="btn btn-primary w-25" id="abrirModalCadastrarProduto">Cadastrar</button>
         </div>
     </main>
 
-    <div id="modalCadastrarCategoria" class="modal fade" tabindex="-1">
+    <div id="modalCadastrarProduto" class="modal fade" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Cadastrar categoria</h5>
+                    <h5 class="modal-title">Cadastrar produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formularioCadastrarCategoria" novalidate>
+                    <form id="formularioCadastrarProduto" novalidate>
                         <div class="mb-3">
-                            <label for="cadastrarNomeCategoria" class="form-label">Nome: </label>
-                            <input type="text" class="form-control" id="cadastrarNomeCategoria" required>
+                            <label for="cadastrarNomeProduto" class="form-label">Nome: </label>
+                            <input type="text" class="form-control" id="cadastrarNomeProduto" required>
                         </div>
                         <div class="mb-3">
-                            <label for="cadastrarDescricaoCategoria" class="form-label">Descrição: </label>
-                            <textarea class="form-control" id="cadastrarDescricaoCategoria" required></textarea>
+                            <label for="cadastrarPrecoProduto" class="form-label">Preço: </label>
+                            <input type="text" class="form-control" id="cadastrarPrecoProduto" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cadastrarCategoriaProduto" class="form-label">Selecionar categoria: </label>
+                            <select type="text" class="form-control categoriasEncontradas" id="cadastrarCategoriaProduto" required>
+                            </select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="salvarCategoria">Salvar categoria</button>
+                    <button type="button" class="btn btn-success" id="salvarProduto">Salvar produto</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="modalEditarCategoria" class="modal fade" tabindex="-1">
+    <div id="modalEditarProduto" class="modal fade" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Editar categoria</h5>
+                    <h5 class="modal-title">Editar produto</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="formularioEditarCategoria" novalidate>
-                        <input type="hidden" id="idDaCategoriaSelecionada"/>
-                        
+                    <form id="formularioEditarProduto" novalidate>
+                        <input type="hidden" id="idDoProdutoSelecionado" />
+
                         <div class="mb-3">
-                            <label for="editarNomeCategoria" class="form-label">Nome: </label>
-                            <input type="text" class="form-control" id="editarNomeCategoria" required>
+                            <label for="editarNomeProduto" class="form-label">Nome: </label>
+                            <input type="text" class="form-control" id="editarNomeProduto" required>
                         </div>
                         <div class="mb-3">
-                            <label for="editarDescricaoCategoria" class="form-label">Descrição: </label>
-                            <textarea class="form-control" id="editarDescricaoCategoria" required></textarea>
+                            <label for="editarPrecoProduto" class="form-label">Preço: </label>
+                            <input type="text" class="form-control" id="editarPrecoProduto" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editarCategoriaProduto" class="form-label">Selecionar categoria: </label>
+                            <select type="text" class="form-control categoriasEncontradas" id="editarCategoriaProduto" required>
+                            </select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" id="editarCategoria">Salvar alterações</button>
+                    <button type="button" class="btn btn-success" id="editarProduto">Salvar alterações</button>
                 </div>
             </div>
         </div>
@@ -142,10 +152,11 @@ $authAdministrador->verificar();
 
     <!-- Meus arquivos JS -->
     <script src="../app/view/js/funcs.js"></script>
-    <script src="../app/view/js/categorias.js"></script>
+    <script src="../app/view/js/produtos.js"></script>
 
     <script>
         listar();
+        listarCategorias();
     </script>
 
 </body>

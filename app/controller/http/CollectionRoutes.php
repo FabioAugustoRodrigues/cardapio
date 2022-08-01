@@ -15,7 +15,11 @@ class CollectionRoutes
             "criar-categoria" => new Method("app\\controller\\http\\CategoriaController", "criar"),
             "listar-categorias" => new Method("app\\controller\\http\\CategoriaController", "listar"),
             "ler-categoria-por-id" => new Method("app\\controller\\http\\CategoriaController", "lerPorId"),
-            "editar-categoria"=> new Method("app\\controller\\http\\CategoriaController", "atualizar")
+            "editar-categoria"=> new Method("app\\controller\\http\\CategoriaController", "atualizar"),
+            "criar-produto" => new Method("app\\controller\\http\\ProdutoController", "criar"),
+            "listar-produtos" => new Method("app\\controller\\http\\ProdutoController", "listar"),
+            "ler-produto-por-id" => new Method("app\\controller\\http\\ProdutoController", "lerPorId"),
+            "editar-produto"=> new Method("app\\controller\\http\\ProdutoController", "atualizar"),
         );
     }
 

@@ -13,5 +13,5 @@ if (isset($_POST['route'])){
     echo $controller->run($_POST, $_POST['route']);
 }else{
     http_response_code(400);
-    echo json_encode("Route not informed");
+    echo json_encode("Rota não encontrada");
 }

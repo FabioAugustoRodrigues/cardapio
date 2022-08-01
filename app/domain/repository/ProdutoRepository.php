@@ -56,7 +56,7 @@ class ProdutoRepository
         $stmt->execute();
         Conexao::desconecta();
 
-        $result = $stmt->fetchAll(PDO::FETCH_CLASS, Produto::class);
+        $result = $stmt->fetchAll();
 
         if (!$result) {
             return [];
@@ -78,5 +78,49 @@ class ProdutoRepository
         }
 
         return true;
+    }
+
+    public function lePorNome(string $nome): ?Produto
+    {
+        $sql = "SELECT * FROM produto WHERE nome = :nome";
+        $stmt = Conexao::getConexao()->prepare($sql);
+        $stmt->bindValue(':nome', $nome);
+        $stmt->execute();
+        Conexao::desconecta();
+
+        $result = $stmt->fetch();
+
+        if (!$result) {
+            return null;
+        }
+
+        return Produto::create()
+                            ->setId($result["id"])
+                            ->setNome($result["nome"])
+                            ->setPreco($result["preco"])
+                            ->setFoto($result["foto"])
+                            ->setSituacao($result["situacao"]);
+    }
+
+    public function lePorId(int $id): ?Produto
+    {
+        $sql = "SELECT * FROM produto WHERE id = :id";
+        $stmt = Conexao::getConexao()->prepare($sql);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+        Conexao::desconecta();
+
+        $result = $stmt->fetch();
+
+        if (!$result) {
+            return null;
+        }
+
+        return Produto::create()
+                            ->setId($result["id"])
+                            ->setNome($result["nome"])
+                            ->setPreco($result["preco"])
+                            ->setFoto($result["foto"])
+                            ->setSituacao($result["situacao"]);
     }
 }

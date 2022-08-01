@@ -49,6 +49,9 @@ $authAdministrador->verificar();
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Categorias</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Produtos</a>
+                    </li>
                 </ul>
             </div>
         </div>
