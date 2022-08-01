@@ -82,7 +82,7 @@ class ProdutoController extends ControllerAbstract
     public function atualizar($dados)
     {
         try {
-            $dadosDoProdutoEmArray = ["id"=>intval($dados["id"]), "nome" => $dados["nome"], "preco" => $dados["preco"], "foto" => "", "situacao" => "Habilitado"];
+            $dadosDoProdutoEmArray = ["id"=>intval($dados["id"]), "nome" => $dados["nome"], "preco" => $dados["preco"], "foto" => "", "situacao" => $dados["situacao"]];
 
             $produto = (object) $this->jsonMapper->map($dadosDoProdutoEmArray, new Produto());
             $this->produtoService->atualizar($produto, intval($dados["id_categoria"]));

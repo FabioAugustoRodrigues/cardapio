@@ -119,6 +119,14 @@ $authAdministrador->verificar();
                         <input type="hidden" id="idDoProdutoSelecionado" />
 
                         <div class="mb-3">
+                            <label for="editarSituacaoProduto" class="form-label">Situação do produto: </label>
+                            <select class="form-control" id="editarSituacaoProduto" required>
+                                <option id="Habilitado">Habilitado</option>
+                                <option id="Desabilitado">Desabilitado</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
                             <label for="editarNomeProduto" class="form-label">Nome: </label>
                             <input type="text" class="form-control" id="editarNomeProduto" required>
                         </div>

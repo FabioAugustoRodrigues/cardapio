@@ -31,17 +31,23 @@ function criar(nome, preco, id_categoria) {
     );
 }
 
-function editar(id, nome, preco, id_categoria) {
-    console.log(id_categoria);
+function editar(id, nome, preco, situacao, id_categoria) {
     let formData = new FormData();
     formData.append("route", "editar-produto");
     formData.append("id", id);
     formData.append("nome", nome);
     formData.append("preco", preco);
+    formData.append("situacao", situacao);
     formData.append("id_categoria", id_categoria);
     ajaxDinamico("POST", formData,
         function(response) {
             $("tr[id_produto='" + id + "'] td.nomeDoProduto").text(nome);
+
+            if ($("#editarSituacaoProduto").val() == "Desabilitado") {
+                $("tr[id_produto='" + id + "']").addClass("table-danger");
+            } else {
+                $("tr[id_produto='" + id + "']").removeClass("table-danger");
+            }
 
             $("#modalEditarProduto").modal("hide");
 
@@ -69,8 +75,13 @@ function listar() {
             let botoesHtml = "<button class='btn btn-primary editarProduto mx-1'>Editar</button>";
 
             for (let i = 0; i < response.length; i++) {
+                let classesTabelaHtml = "";
+                if (response[i]["situacao"] == "Desabilitado") {
+                    classesTabelaHtml += " table-danger";
+                }
+
                 $("#produtosCadastrados > tbody").append(
-                    "<tr id_produto='" + response[i]["id"] + "'>" +
+                    "<tr class='" + classesTabelaHtml + "' id_produto='" + response[i]["id"] + "'>" +
                     "<td class='nomeDoProduto'>" + response[i]["nome"] + "</td>" +
                     "<td>" + botoesHtml + "</td>" +
                     "</tr>"
@@ -114,6 +125,7 @@ function lerPorId(id) {
                 $("#idDoProdutoSelecionado").val(response["produto"]["id"]);
                 $("#editarNomeProduto").val(response["produto"]["nome"]);
                 $("#editarPrecoProduto").val(response["produto"]["preco"]);
+                $("#editarSituacaoProduto").val(response["produto"]["situacao"]);
                 $("#editarCategoriaProduto").find("option[id_categoria='" + response["categoria"]["id"] + "']").attr('selected', 'selected');
 
                 $("#modalEditarProduto").modal("show");
@@ -160,9 +172,9 @@ $(document).ready(function() {
         }
 
         if (formularioEstaValido) {
-            editar($("#idDoProdutoSelecionado").val(), $("#editarNomeProduto").val(), $("#editarPrecoProduto").val(), $("#editarCategoriaProduto").find(":selected").attr("id_categoria"));
+            editar($("#idDoProdutoSelecionado").val(), $("#editarNomeProduto").val(), $("#editarPrecoProduto").val(), $("#editarSituacaoProduto").val(), $("#editarCategoriaProduto").find(":selected").attr("id_categoria"));
             $("#formularioEditarProduto").removeClass("was-validated");
         }
     });
 
-});;
+})
