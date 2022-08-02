@@ -1,9 +1,13 @@
 function criar(nome, preco, id_categoria) {
+    let file_data = $("#cadastrarImagemProduto").prop("files")[0];
+
     let formData = new FormData();
     formData.append("route", "criar-produto");
     formData.append("nome", nome);
     formData.append("preco", preco);
     formData.append("id_categoria", id_categoria);
+    formData.append("file", file_data == undefined ? null : file_data);
+
     ajaxDinamico("POST", formData,
         function(response) {
             let botoesHtml = "<button class='btn btn-primary editarProduto mx-1'>Editar</button>";
@@ -23,6 +27,7 @@ function criar(nome, preco, id_categoria) {
             swal("Produto cadastrado com sucesso!", "", "success");
         },
         function(response) {
+            console.log(response);
             swal(response.responseJSON[0], "", "error");
 
             $("#cadastrarNomeProduto").val("");
@@ -32,6 +37,8 @@ function criar(nome, preco, id_categoria) {
 }
 
 function editar(id, nome, preco, situacao, id_categoria) {
+    let file_data = $("#editarImagemProduto").prop("files")[0];
+
     let formData = new FormData();
     formData.append("route", "editar-produto");
     formData.append("id", id);
@@ -39,6 +46,8 @@ function editar(id, nome, preco, situacao, id_categoria) {
     formData.append("preco", preco);
     formData.append("situacao", situacao);
     formData.append("id_categoria", id_categoria);
+    formData.append("file", file_data == undefined ? null : file_data);
+
     ajaxDinamico("POST", formData,
         function(response) {
             $("tr[id_produto='" + id + "'] td.nomeDoProduto").text(nome);

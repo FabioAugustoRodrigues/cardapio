@@ -10,6 +10,7 @@ use app\domain\service\AdministradorService;
 use app\domain\service\CategoriaService;
 use app\domain\service\ProdutoService;
 use app\helper\http\PayloadHttp;
+use app\util\FileUtil;
 use app\util\JsonMapper;
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
@@ -18,6 +19,7 @@ $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions([
     PayloadHttp::class => new PayloadHttp(),
     JsonMapper::class => new JsonMapper(),
+    FileUtil::class => new FileUtil(),
     AuthAdministrador::class => new AuthAdministrador(),
     AdministradorRepository::class => new AdministradorRepository(),
     CategoriaRepository::class => new CategoriaRepository(),
@@ -38,8 +40,9 @@ $containerBuilder->addDefinitions([
         $produtoRepository = $container->get(ProdutoRepository::class);
         $categoriaRepository = $container->get(CategoriaRepository::class);
         $produtoCategoriaRepository = $container->get(ProdutoCategoriaRepository::class);
+        $fileUtil = $container->get(FileUtil::class);
 
-        return new ProdutoService($produtoRepository, $categoriaRepository, $produtoCategoriaRepository);
+        return new ProdutoService($produtoRepository, $categoriaRepository, $produtoCategoriaRepository, $fileUtil);
     }
 ]);
 

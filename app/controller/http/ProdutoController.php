@@ -30,7 +30,7 @@ class ProdutoController extends ControllerAbstract
             $dadosDoProdutoEmArray = ["nome" => $dados["nome"], "preco" => $dados["preco"], "foto" => "", "situacao" => "Habilitado"];
 
             $produto = (object) $this->jsonMapper->map($dadosDoProdutoEmArray, new Produto());
-            $id = $this->produtoService->criar($produto, intval($dados["id_categoria"]));
+            $id = $this->produtoService->criar($produto, $dados["file"], intval($dados["id_categoria"]));
 
             $resultado = [
                 "id" => $id
@@ -85,7 +85,7 @@ class ProdutoController extends ControllerAbstract
             $dadosDoProdutoEmArray = ["id"=>intval($dados["id"]), "nome" => $dados["nome"], "preco" => $dados["preco"], "foto" => "", "situacao" => $dados["situacao"]];
 
             $produto = (object) $this->jsonMapper->map($dadosDoProdutoEmArray, new Produto());
-            $this->produtoService->atualizar($produto, intval($dados["id_categoria"]));
+            $this->produtoService->atualizar($produto, $dados["file"]=="null"?[]:$dados["file"], intval($dados["id_categoria"]));
 
             return $this->respondeComDados("Produto atualizado com sucesso!", 200);
         } catch (DomainHttpException $domainHttpException) {

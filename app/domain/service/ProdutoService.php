@@ -9,21 +9,24 @@ use app\domain\model\ProdutoCategoria;
 use app\domain\repository\CategoriaRepository;
 use app\domain\repository\ProdutoCategoriaRepository;
 use app\domain\repository\ProdutoRepository;
+use app\util\FileUtil;
 
 class ProdutoService
 {
     private $produtoRepository;
     private $categoriaRepository;
     private $produtoCategoriaRepository;
+    private $fileUtil;
 
-    public function __construct(ProdutoRepository $produtoRepository, CategoriaRepository $categoriaRepository, ProdutoCategoriaRepository $produtoCategoriaRepository)
+    public function __construct(ProdutoRepository $produtoRepository, CategoriaRepository $categoriaRepository, ProdutoCategoriaRepository $produtoCategoriaRepository, FileUtil $fileUtil)
     {
         $this->produtoRepository = $produtoRepository;
         $this->categoriaRepository = $categoriaRepository;
         $this->produtoCategoriaRepository = $produtoCategoriaRepository;
+        $this->fileUtil = $fileUtil;
     }
 
-    public function criar(Produto $produto, int $id_categoria): int
+    public function criar(Produto $produto, array $dadosDaImagem, int $id_categoria): int
     {
         if ($this->lePorNome($produto->getNome()) != null) {
             throw new DomainHttpException("Nome já está em uso", 409);
@@ -33,6 +36,9 @@ class ProdutoService
             throw new DomainHttpException("Categoria não encontrada", 404);
         }
 
+        $nomeDaImagem = $this->fileUtil->insereImagem($dadosDaImagem, "../../../documentos/fotos/");
+
+        $produto->setFoto($nomeDaImagem);
         $produto->setId($this->produtoRepository->criar($produto));
 
         $produtoCategoria = ProdutoCategoria::create()
@@ -44,11 +50,13 @@ class ProdutoService
         return $produto->getId();
     }
 
-    public function atualizar(Produto $produto, int $id_categoria): bool
+    public function atualizar(Produto $produto, array $dadosDaImagem, int $id_categoria): bool
     {
-        if ($this->lePorId($produto->getId()) == null) {
+        $produtoTemp = $this->lePorId($produto->getId());
+        if ($produtoTemp == null) {
             throw new DomainHttpException("Produto não encotrado", 404);
         }
+        $produto->setFoto($produtoTemp->getFoto());
 
         $produtoTemp = $this->lePorNome($produto->getNome());
         if ($produtoTemp != null && $produtoTemp->getId() != $produto->getId()) {
@@ -58,9 +66,15 @@ class ProdutoService
         if ($this->categoriaRepository->lePorId($id_categoria) == null) {
             throw new DomainHttpException("Categoria não encontrada", 404);
         }
-        
+
+        if (isset($dadosDaImagem["type"])) {
+            $this->fileUtil->excluiArquivo("../../../documentos/fotos/".$produto->getFoto());
+            $nomeDaImagem = $this->fileUtil->insereImagem($dadosDaImagem, "../../../documentos/fotos/");
+            $produto->setFoto($nomeDaImagem);
+        }
+
         $this->produtoRepository->atualizar($produto);
-        
+
         $produtoCategoria = $this->produtoCategoriaRepository->leProdutoCategoriaPorIdProduto($produto->getId());
         $produtoCategoria->setId_categoria($id_categoria);
         return $this->produtoCategoriaRepository->atualiza($produtoCategoria);

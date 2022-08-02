@@ -90,6 +90,10 @@ $authAdministrador->verificar();
                             <input type="text" class="form-control" id="cadastrarNomeProduto" required>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label" for="cadastrarImagemProduto">Imagem: </label>
+                            <input type="file" id="cadastrarImagemProduto" accept="image/png, image/gif, image/jpeg, image/jpg" class="form-control w-100" required>
+                        </div>
+                        <div class="mb-3">
                             <label for="cadastrarPrecoProduto" class="form-label">Preço: </label>
                             <input type="text" class="form-control" id="cadastrarPrecoProduto" required>
                         </div>
@@ -125,10 +129,13 @@ $authAdministrador->verificar();
                                 <option id="Desabilitado">Desabilitado</option>
                             </select>
                         </div>
-
                         <div class="mb-3">
                             <label for="editarNomeProduto" class="form-label">Nome: </label>
                             <input type="text" class="form-control" id="editarNomeProduto" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="editarImagemProduto">Imagem (caso não altere, a imagem continuará a mesma): </label>
+                            <input type="file" id="editarImagemProduto" accept="image/png, image/gif, image/jpeg, image/jpg" class="form-control w-100">
                         </div>
                         <div class="mb-3">
                             <label for="editarPrecoProduto" class="form-label">Preço: </label>
