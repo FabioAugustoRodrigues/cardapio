@@ -20,6 +20,7 @@ class CollectionRoutes
             "listar-produtos" => new Method("app\\controller\\http\\ProdutoController", "listar"),
             "ler-produto-por-id" => new Method("app\\controller\\http\\ProdutoController", "lerPorId"),
             "editar-produto"=> new Method("app\\controller\\http\\ProdutoController", "atualizar"),
+            "excluir-produto"=> new Method("app\\controller\\http\\ProdutoController", "excluir"),
         );
     }
 

@@ -94,4 +94,17 @@ class ProdutoController extends ControllerAbstract
             return $this->respondeComDados($domainException->getMessage(), 500);
         }
     }
+
+    public function excluir($dados)
+    {
+        try {
+            $this->produtoService->excluir($dados["id"]);
+
+            return $this->respondeComDados("Produto deletado com sucesso!", 200);
+        } catch (DomainHttpException $domainHttpException) {
+            return $this->respondeComDados($domainHttpException->getMessage(), $domainHttpException->getHttpStatusCode());
+        } catch (DomainException $domainException) {
+            return $this->respondeComDados($domainException->getMessage(), 500);
+        }
+    }
 }

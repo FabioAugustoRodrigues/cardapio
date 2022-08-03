@@ -80,6 +80,18 @@ class ProdutoService
         return $this->produtoCategoriaRepository->atualiza($produtoCategoria);
     }
 
+    public function excluir(int $id): bool
+    {
+        $produtoTemp = $this->lePorId($id);
+        if ($produtoTemp == null) {
+            throw new DomainHttpException("Produto não encotrado", 404);
+        }
+
+        $this->fileUtil->excluiArquivo("../../../documentos/fotos/".$produtoTemp->getFoto());
+
+        return $this->produtoRepository->excluir($id);
+    }
+
     public function lePorId(int $id): ?Produto
     {
         return $this->produtoRepository->lePorId($id);

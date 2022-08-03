@@ -10,7 +10,7 @@ function criar(nome, preco, id_categoria) {
 
     ajaxDinamico("POST", formData,
         function(response) {
-            let botoesHtml = "<button class='btn btn-primary editarProduto mx-1'>Editar</button>";
+            let botoesHtml = "<button class = 'btn btn-primary editarProduto mx-1'>Editar</button><button class='btn btn-danger excluirProduto mx-1'>Excluir</button>";
 
             $("#produtosCadastrados > tbody").append(
                 "<tr id_produto='" + response["id"] + "'>" +
@@ -80,8 +80,7 @@ function listar() {
     formData.append("route", "listar-produtos");
     ajaxDinamico("POST", formData,
         function(response) {
-            console.log(response);
-            let botoesHtml = "<button class='btn btn-primary editarProduto mx-1'>Editar</button>";
+            let botoesHtml = "<button class = 'btn btn-primary editarProduto mx-1'>Editar</button><button class='btn btn-danger excluirProduto mx-1'>Excluir</button>";
 
             for (let i = 0; i < response.length; i++) {
                 let classesTabelaHtml = "";
@@ -141,6 +140,22 @@ function lerPorId(id) {
             }
         },
         function(response) {
+            swal(response.responseJSON[0], "", "error");
+        }
+    );
+}
+
+function excluir(id) {
+    let formData = new FormData();
+    formData.append("route", "excluir-produto");
+    formData.append("id", id);
+    ajaxDinamico("POST", formData,
+        function(response) {
+            $("tr[id_produto='" + id + "']").remove();
+
+            swal(response[0], "", "success");
+        },
+        function(response) {
             console.log(response);
             swal(response.responseJSON[0], "", "error");
         }
@@ -170,6 +185,25 @@ $(document).ready(function() {
     $(document).on("click", ".editarProduto", function() {
         let id = $(this).parents("tr").attr("id_produto");
         lerPorId(id);
+    });
+
+    $(document).on("click", ".excluirProduto", function() {
+        let id = $(this).parents("tr").attr("id_produto");
+        let nome = $(this).parents("tr td.nomeDoProduto").text();
+        console.log(nome);
+
+        swal({
+                title: "Atenção!",
+                text: "Deseja deletar o produto " + nome,
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            })
+            .then((iraDeletar) => {
+                if (iraDeletar) {
+                    excluir(id);
+                }
+            });
     });
 
     $("#editarProduto").on("click", function() {
