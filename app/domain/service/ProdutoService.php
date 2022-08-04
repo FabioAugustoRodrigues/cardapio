@@ -68,7 +68,7 @@ class ProdutoService
         }
 
         if (isset($dadosDaImagem["type"])) {
-            $this->fileUtil->excluiArquivo("../../../documentos/fotos/".$produto->getFoto());
+            $this->fileUtil->excluiArquivo("../../../documentos/fotos/" . $produto->getFoto());
             $nomeDaImagem = $this->fileUtil->insereImagem($dadosDaImagem, "../../../documentos/fotos/");
             $produto->setFoto($nomeDaImagem);
         }
@@ -87,7 +87,7 @@ class ProdutoService
             throw new DomainHttpException("Produto não encotrado", 404);
         }
 
-        $this->fileUtil->excluiArquivo("../../../documentos/fotos/".$produtoTemp->getFoto());
+        $this->fileUtil->excluiArquivo("../../../documentos/fotos/" . $produtoTemp->getFoto());
 
         return $this->produtoRepository->excluir($id);
     }
@@ -110,5 +110,30 @@ class ProdutoService
     public function lePorNome(string $nome): ?Produto
     {
         return $this->produtoRepository->lePorNome($nome);
+    }
+
+    public function listarPorCategoria(): array
+    {
+        return $this->organizaProdutosPorCategoria($this->produtoCategoriaRepository->listarProdutosPorCategoria());
+    }
+
+    public function organizaProdutosPorCategoria(array $catalogoDesorganizado): array
+    {
+        $catalogoOrganizado = array();
+        $categoriaAtual = "";
+        for ($i = 0; $i < count($catalogoDesorganizado); $i++) { // 0(n)
+            if ($categoriaAtual != $catalogoDesorganizado[$i]["nomeCategoria"]) {
+                $categoriaAtual = $catalogoDesorganizado[$i]["nomeCategoria"];
+                $catalogoOrganizado[$catalogoDesorganizado[$i]["nomeCategoria"]] = array();
+            }
+
+            $produtoEncontrado["nome"] = $catalogoDesorganizado[$i]["nome"];
+            $produtoEncontrado["foto"] = $catalogoDesorganizado[$i]["foto"];
+            $produtoEncontrado["preco"] = $catalogoDesorganizado[$i]["preco"];
+
+            array_push($catalogoOrganizado[$categoriaAtual], $produtoEncontrado);
+        }
+
+        return $catalogoOrganizado;
     }
 }

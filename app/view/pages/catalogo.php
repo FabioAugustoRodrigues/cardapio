@@ -61,10 +61,32 @@ $authAdministrador->verificar();
         <div class="bg-light p-5 rounded">
             <h1>Catalogo dos produtos</h1>
         </div>
+
+        <section class="container">
+            <div class="w-100" id="catalogo">
+
+            </div>
+        </section>
     </main>
 
 
-    <script src="/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- CDN Jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <!-- CDN SweetAlert JS -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+
+    <!-- Meus arquivos JS -->
+    <script src="../app/view/js/funcs.js"></script>
+    <script src="../app/view/js/produtos.js"></script>
+
+    <script>
+        listarProdutosPorCategoria();
+    </script>
 
 
 </body>

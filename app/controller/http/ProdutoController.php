@@ -107,4 +107,16 @@ class ProdutoController extends ControllerAbstract
             return $this->respondeComDados($domainException->getMessage(), 500);
         }
     }
+
+    public function listarCatalogo($dados){
+        try {
+            $produtosListadosPorCategoria = $this->produtoService->listarPorCategoria();
+
+            return $this->respondeComDados($produtosListadosPorCategoria, 200);
+        } catch (DomainHttpException $domainHttpException) {
+            return $this->respondeComDados($domainHttpException->getMessage(), $domainHttpException->getHttpStatusCode());
+        } catch (DomainException $domainException) {
+            return $this->respondeComDados($domainException->getMessage(), 500);
+        }
+    }
 }

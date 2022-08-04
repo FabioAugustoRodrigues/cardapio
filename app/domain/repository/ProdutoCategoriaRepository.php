@@ -90,4 +90,23 @@ class ProdutoCategoriaRepository
 
         return true;
     }
+
+    public function listarProdutosPorCategoria(): array
+    {
+        $sql = "SELECT produto.nome, produto.foto, produto.preco, categoria.nome AS 'nomeCategoria' FROM produto_categoria
+                INNER JOIN produto ON produto.id = produto_categoria.id_produto
+                INNER JOIN categoria ON categoria.id = produto_categoria.id_categoria
+                WHERE produto.situacao = 'Habilitado'";
+        $stmt = Conexao::getConexao()->prepare($sql);
+        $stmt->execute();
+        Conexao::desconecta();
+
+        $result = $stmt->fetchAll();
+
+        if (!$result) {
+            return [];
+        }
+
+        return $result;
+    }
 }

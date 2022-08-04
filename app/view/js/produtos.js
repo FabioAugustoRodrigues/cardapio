@@ -156,7 +156,41 @@ function excluir(id) {
             swal(response[0], "", "success");
         },
         function(response) {
-            console.log(response);
+            swal(response.responseJSON[0], "", "error");
+        }
+    );
+}
+
+function listarProdutosPorCategoria() {
+    let formData = new FormData();
+    formData.append("route", "listar-catalogo");
+    ajaxDinamico("POST", formData,
+        function(response) {
+            for (const categoria in response) {
+                $("#catalogo").append(
+                    "<div class='w-100 row mb-3' id='categoria" + categoria + "'>" +
+                    "<h3>" + categoria + "</h3>" +
+                    "</div>"
+                );
+
+                for (let i = 0; i < response[categoria].length; i++) {
+                    $("#categoria" + categoria).append(
+                        "<div class='card col-sm-12 col-md-12 mb-2 produtoEncontrado'>" +
+                        "<div class='card-body row'>" +
+                        "<div class='col-sm-12 col-md-1'>" +
+                        "<img src='../documentos/fotos/" + response[categoria][i]["foto"] + "' class='rounded w-100'>" +
+                        "</div>" +
+                        "<div class='col-sm-12 col-md-11'>" +
+                        "<h5 class='card-title'>" + response[categoria][i]["nome"] + "</h5>" +
+                        "<h6>R$ " + response[categoria][i]["preco"] + "</h6>" +
+                        "</div>" +
+                        "</div>" +
+                        "</div>"
+                    );
+                }
+            }
+        },
+        function(response) {
             swal(response.responseJSON[0], "", "error");
         }
     );
@@ -219,5 +253,4 @@ $(document).ready(function() {
             $("#formularioEditarProduto").removeClass("was-validated");
         }
     });
-
-})
+});

@@ -21,6 +21,7 @@ class CollectionRoutes
             "ler-produto-por-id" => new Method("app\\controller\\http\\ProdutoController", "lerPorId"),
             "editar-produto"=> new Method("app\\controller\\http\\ProdutoController", "atualizar"),
             "excluir-produto"=> new Method("app\\controller\\http\\ProdutoController", "excluir"),
+            "listar-catalogo"=> new Method("app\\controller\\http\\ProdutoController", "listarCatalogo"),
         );
     }
 
