@@ -44,13 +44,13 @@ $authAdministrador->verificar();
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Catalogo</a>
+                        <a class="nav-link active" aria-current="page" href="/cardapio/catalogo/">Catalogo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Categorias</a>
+                        <a class="nav-link active" aria-current="page" href="/cardapio/categorias/">Categorias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Produtos</a>
+                        <a class="nav-link active" aria-current="page" href="/cardapio/produtos/">Produtos</a>
                     </li>
                 </ul>
             </div>
