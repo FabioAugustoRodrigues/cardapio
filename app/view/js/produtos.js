@@ -132,7 +132,7 @@ function lerPorId(id) {
             } else {
                 $("#idDoProdutoSelecionado").val(response["produto"]["id"]);
                 $("#editarNomeProduto").val(response["produto"]["nome"]);
-                $("#editarPrecoProduto").val(response["produto"]["preco"]);
+                $("#editarPrecoProduto").val(response["produto"]["preco"].replace(".", ","));
                 $("#editarSituacaoProduto").val(response["produto"]["situacao"]);
                 $("#editarCategoriaProduto").find("option[id_categoria='" + response["categoria"]["id"] + "']").attr('selected', 'selected');
 
@@ -174,6 +174,9 @@ function listarProdutosPorCategoria() {
                 );
 
                 for (let i = 0; i < response[categoria].length; i++) {
+                    let preco = response[categoria][i]["preco"];
+                    preco = preco.replaceAll(".", ",");
+
                     $("#categoria" + categoria).append(
                         "<div class='card col-sm-12 col-md-12 mb-2 produtoEncontrado'>" +
                         "<div class='card-body row'>" +
@@ -182,7 +185,7 @@ function listarProdutosPorCategoria() {
                         "</div>" +
                         "<div class='col-sm-12 col-md-11'>" +
                         "<h5 class='card-title'>" + response[categoria][i]["nome"] + "</h5>" +
-                        "<h6>R$ " + response[categoria][i]["preco"] + "</h6>" +
+                        "<h6>R$ " + preco + "</h6>" +
                         "</div>" +
                         "</div>" +
                         "</div>"

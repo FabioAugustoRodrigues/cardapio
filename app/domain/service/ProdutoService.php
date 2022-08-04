@@ -2,7 +2,9 @@
 
 namespace app\domain\service;
 
+use app\domain\validacao\Validacao;
 use app\domain\exception\http\DomainHttpException;
+use app\domain\exception\http\ValidacaoHttpException;
 use app\domain\model\Categoria;
 use app\domain\model\Produto;
 use app\domain\model\ProdutoCategoria;
@@ -17,13 +19,15 @@ class ProdutoService
     private $categoriaRepository;
     private $produtoCategoriaRepository;
     private $fileUtil;
+    private $validacao;
 
-    public function __construct(ProdutoRepository $produtoRepository, CategoriaRepository $categoriaRepository, ProdutoCategoriaRepository $produtoCategoriaRepository, FileUtil $fileUtil)
+    public function __construct(ProdutoRepository $produtoRepository, CategoriaRepository $categoriaRepository, ProdutoCategoriaRepository $produtoCategoriaRepository, FileUtil $fileUtil, Validacao $validacao)
     {
         $this->produtoRepository = $produtoRepository;
         $this->categoriaRepository = $categoriaRepository;
         $this->produtoCategoriaRepository = $produtoCategoriaRepository;
         $this->fileUtil = $fileUtil;
+        $this->validacao = $validacao;
     }
 
     public function criar(Produto $produto, array $dadosDaImagem, int $id_categoria): int
@@ -36,18 +40,26 @@ class ProdutoService
             throw new DomainHttpException("Categoria não encontrada", 404);
         }
 
-        $nomeDaImagem = $this->fileUtil->insereImagem($dadosDaImagem, "../../../documentos/fotos/");
+        $produto->setPreco(str_replace(".", "", $produto->getPreco()));
+        $produto->setPreco(str_replace(",", ".", $produto->getPreco()));
 
-        $produto->setFoto($nomeDaImagem);
-        $produto->setId($this->produtoRepository->criar($produto));
+        $this->validaProduto($produto);
+        if ($this->validacao->isSuccess()) {
+            $nomeDaImagem = $this->fileUtil->insereImagem($dadosDaImagem, "../../../documentos/fotos/");
 
-        $produtoCategoria = ProdutoCategoria::create()
-            ->setId(null)
-            ->setId_produto($produto->getId())
-            ->setId_categoria($id_categoria);
-        $produtoCategoria->setId($this->produtoCategoriaRepository->criar($produtoCategoria));
+            $produto->setFoto($nomeDaImagem);
+            $produto->setId($this->produtoRepository->criar($produto));
 
-        return $produto->getId();
+            $produtoCategoria = ProdutoCategoria::create()
+                ->setId(null)
+                ->setId_produto($produto->getId())
+                ->setId_categoria($id_categoria);
+            $produtoCategoria->setId($this->produtoCategoriaRepository->criar($produtoCategoria));
+
+            return $produto->getId();
+        }
+
+        throw new ValidacaoHttpException(implode("\n", $this->validacao->getErrors()), 400);
     }
 
     public function atualizar(Produto $produto, array $dadosDaImagem, int $id_categoria): bool
@@ -67,17 +79,25 @@ class ProdutoService
             throw new DomainHttpException("Categoria não encontrada", 404);
         }
 
-        if (isset($dadosDaImagem["type"])) {
-            $this->fileUtil->excluiArquivo("../../../documentos/fotos/" . $produto->getFoto());
-            $nomeDaImagem = $this->fileUtil->insereImagem($dadosDaImagem, "../../../documentos/fotos/");
-            $produto->setFoto($nomeDaImagem);
+        $produto->setPreco(str_replace(".", "", $produto->getPreco()));
+        $produto->setPreco(str_replace(",", ".", $produto->getPreco()));
+
+        $this->validaProduto($produto);
+        if ($this->validacao->isSuccess()) {
+            if (isset($dadosDaImagem["type"])) {
+                $this->fileUtil->excluiArquivo("../../../documentos/fotos/" . $produto->getFoto());
+                $nomeDaImagem = $this->fileUtil->insereImagem($dadosDaImagem, "../../../documentos/fotos/");
+                $produto->setFoto($nomeDaImagem);
+            }
+
+            $this->produtoRepository->atualizar($produto);
+
+            $produtoCategoria = $this->produtoCategoriaRepository->leProdutoCategoriaPorIdProduto($produto->getId());
+            $produtoCategoria->setId_categoria($id_categoria);
+            return $this->produtoCategoriaRepository->atualiza($produtoCategoria);
         }
 
-        $this->produtoRepository->atualizar($produto);
-
-        $produtoCategoria = $this->produtoCategoriaRepository->leProdutoCategoriaPorIdProduto($produto->getId());
-        $produtoCategoria->setId_categoria($id_categoria);
-        return $this->produtoCategoriaRepository->atualiza($produtoCategoria);
+        throw new ValidacaoHttpException(implode("\n", $this->validacao->getErrors()), 400);
     }
 
     public function excluir(int $id): bool
@@ -135,5 +155,11 @@ class ProdutoService
         }
 
         return $catalogoOrganizado;
+    }
+
+    public function validaProduto(Produto $produto)
+    {
+        $this->validacao->name('Nome')->value($produto->getNome())->pattern('text')->required();
+        $this->validacao->name('Preço')->value($produto->getPreco())->pattern('float')->required();
     }
 }

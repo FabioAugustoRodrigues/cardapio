@@ -95,7 +95,7 @@ $authAdministrador->verificar();
                         </div>
                         <div class="mb-3">
                             <label for="cadastrarPrecoProduto" class="form-label">Preço: </label>
-                            <input type="text" class="form-control" id="cadastrarPrecoProduto" required>
+                            <input type="text" class="form-control dinheiro" id="cadastrarPrecoProduto" required>
                         </div>
                         <div class="mb-3">
                             <label for="cadastrarCategoriaProduto" class="form-label">Selecionar categoria: </label>
@@ -139,7 +139,7 @@ $authAdministrador->verificar();
                         </div>
                         <div class="mb-3">
                             <label for="editarPrecoProduto" class="form-label">Preço: </label>
-                            <input type="text" class="form-control" id="editarPrecoProduto" required>
+                            <input type="text" class="form-control dinheiro" id="editarPrecoProduto" required>
                         </div>
                         <div class="mb-3">
                             <label for="editarCategoriaProduto" class="form-label">Selecionar categoria: </label>
@@ -158,6 +158,9 @@ $authAdministrador->verificar();
     <!-- CDN Jquery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
+    <!-- CDN mask money plugin -->
+    <script src="https://cdn.jsdelivr.net/gh/plentz/jquery-maskmoney@master/dist/jquery.maskMoney.min.js"></script>
+
     <!-- CDN SweetAlert JS -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
@@ -172,6 +175,13 @@ $authAdministrador->verificar();
     <script>
         listar();
         listarCategorias();
+
+        $(".dinheiro").maskMoney({
+            allowNegative: false,
+            thousands: '.',
+            decimal: ',',
+            affixesStay: true
+        });
     </script>
 
 </body>

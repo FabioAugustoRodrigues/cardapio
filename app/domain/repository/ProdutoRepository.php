@@ -36,7 +36,7 @@ class ProdutoRepository
         $stmt = Conexao::getConexao()->prepare($sql);
         $stmt->bindValue(':nome', $produto->getNome());
         $stmt->bindValue(':preco', $produto->getPreco());
-        $stmt->bindValue(':foto', $produto->getPreco());
+        $stmt->bindValue(':foto', $produto->getFoto());
         $stmt->bindValue(':situacao', $produto->getSituacao());
         $stmt->bindValue(':id', $produto->getId());
         $result = $stmt->execute();

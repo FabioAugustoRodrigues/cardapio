@@ -1,5 +1,6 @@
 <?php
 
+use app\domain\validacao\Validacao;
 use app\domain\auth\AuthAdministrador;
 use app\domain\model\Categoria;
 use app\domain\repository\AdministradorRepository;
@@ -20,6 +21,7 @@ $containerBuilder->addDefinitions([
     PayloadHttp::class => new PayloadHttp(),
     JsonMapper::class => new JsonMapper(),
     FileUtil::class => new FileUtil(),
+    Validacao::class => new Validacao(),
     AuthAdministrador::class => new AuthAdministrador(),
     AdministradorRepository::class => new AdministradorRepository(),
     CategoriaRepository::class => new CategoriaRepository(),
@@ -33,16 +35,18 @@ $containerBuilder->addDefinitions([
     },
     CategoriaService::class => function (ContainerInterface $container){
         $categoriaRepository = $container->get(CategoriaRepository::class);
+        $validacao = $container->get(Validacao::class);
 
-        return new CategoriaService($categoriaRepository);
+        return new CategoriaService($categoriaRepository, $validacao);
     },
     ProdutoService::class => function (ContainerInterface $container){
         $produtoRepository = $container->get(ProdutoRepository::class);
         $categoriaRepository = $container->get(CategoriaRepository::class);
         $produtoCategoriaRepository = $container->get(ProdutoCategoriaRepository::class);
         $fileUtil = $container->get(FileUtil::class);
+        $validacao = $container->get(Validacao::class);
 
-        return new ProdutoService($produtoRepository, $categoriaRepository, $produtoCategoriaRepository, $fileUtil);
+        return new ProdutoService($produtoRepository, $categoriaRepository, $produtoCategoriaRepository, $fileUtil, $validacao);
     }
 ]);
 
